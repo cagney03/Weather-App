@@ -1,0 +1,61 @@
+import requests
+from tkinter import *
+
+def weather():
+    city = city_listbox.get()
+    url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid=62f668dc94069b9a16445e8a77559b6e".format(city)
+    res = requests.get(url)
+    output = res.json()
+
+    weather_status = output['weather'][0]['description']
+    temprature = output['main']['temp']
+    humidity = output['main']['humidity']
+    wind_speed = output['wind']['speed']
+
+    weather_status_label.configure(text="Weather Status: " + weather_status.title(), fg="#FFFFFF", bg="#5D5D5D")
+    temprature_label.configure(text="Temprature: " + str(round(temprature - 273.15, 2)) + " °C", fg="#FFFFFF", bg="#5D5D5D")
+    humidity_label.configure(text="Humidity: " + str(humidity) + " %", fg="#FFFFFF", bg="#5D5D5D")
+    wind_speed_label.configure(text="Wind Speed: " + str(wind_speed) + " km/hr", fg="#FFFFFF", bg="#5D5D5D")
+
+window = Tk()
+window.title("Weather App")
+window.geometry("400x350")
+window.minsize(300, 250)
+
+# Adding Background Color
+bg_color = "#6CAEDF"
+window.config(bg=bg_color)
+
+city_name_list = ["Delhi", "Mumbai","", "Kolkata","Eluru","Kannur","Chennai", "Bangalore", "Hyderabad", "Pune", "Ahmedabad", "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Patna", "Bhopal", "Visakhapatnam", "Vadodara", "Coimbatore", "Ludhiana", "Nashik", "Agra", "Faridabad", "Meerut", "Rajkot", "Varanasi", "Srinagar", "Allahabad", "Jabalpur", "Amritsar", "Gwalior", "Vijayawada", "Madurai", "Jodhpur", "Raipur", "Kota", "Guwahati", "Chandigarh", "Solapur", "Hubli-Dharwad", "Bareilly", "Moradabad", "Mysore", "Gurgaon", "Aligarh", "Jalandhar", "Tiruchirappalli", "Bhubaneswar", "Salem", "Mira-Bhayandar", "Thiruvananthapuram", "Bhiwandi", "Saharanpur", "Gorakhpur", "Guntur", "Bikaner", "Amravati", "Noida", "Jamshedpur", "Bhilai", "Warangal", "Cuttack", "Firozabad", "Kochi", "Bhavnagar", "Dehradun", "Durgapur", "Asansol", "Nanded", "Kolhapur", "Ajmer", "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi", "Ulhasnagar", "Nellore", "Jammu", "Sangli-Miraj & Kupwad", "Belgaum", "Mangalore", "Ambattur", "Tirunelveli", "Malegaon", "Gaya", "Jalgaon", "Udaipur", "Maheshtala", "Davanagere", "Kozhikode", "Akola", "Kurnool", "Rajpur Sonarpur", "Rajahmundry", "Bokaro", "South Dumdum", "Bellary", "Patiala", "Gopalpur", "Agartala", "Bardhaman", "Barasat", "Bijapur", "Shahjahanpur", "Kakinada", "Sikar", "Kollam", "Tumkur", "Kharagpur"]
+city_name_list.sort()
+
+city_listbox = StringVar(window)
+city_listbox.set("Select City")
+city_listbox_menu = OptionMenu(window, city_listbox, *city_name_list)
+city_listbox_menu.config(width=15, relief=FLAT)
+city_listbox_menu.grid(row=2, column=2, padx=20, pady=10, sticky="ew")
+
+# Adding Button Color
+button_color = "#3B3B3B"
+b1 = Button(window, text="Get Weather", width=12, command=weather, bg=button_color, fg="#FFFFFF")
+b1.grid(row=5, column=2, padx=20, pady=10, sticky="n")
+
+# Adding Labels and Setting their Colors
+weather_status_label = Label(window, font=("Helvetica", 12, "bold"))
+weather_status_label.grid(row=10, column=2, padx=20, pady=10, sticky="n")
+
+temprature_label = Label(window, font=("Helvetica", 12, "bold"))
+temprature_label.grid(row=12, column=2, padx=20, pady=10, sticky="n")
+
+humidity_label = Label(window, font=("Helvetica", 12, "bold"))
+humidity_label.grid(row=14, column=2, padx=20, pady=10, sticky="n")
+
+wind_speed_label = Label(window, font=("Helvetica", 12, "bold"))
+wind_speed_label.grid(row=16, column=2, padx=20, pady=10, sticky="n")
+
+# Making Widgets Flexible
+window.grid_columnconfigure(2, weight=1)
+window.grid_rowconfigure(1, weight=1)
+window.grid_rowconfigure(3, weight=1)
+
+window.mainloop()
